@@ -1,16 +1,34 @@
+mod consts;
 mod course;
+
+use std::fs;
 
 use course::Course;
 use select::document::Document;
 use select::predicate::Name;
 
+use crate::consts::MAJORS_URLS;
+
 fn main() {
-    let major = parse_major();
-    println!("{:#?}", major);
+    MAJORS_URLS.iter().for_each(|(name, url)| {
+        eprintln!("Getting {}", name);
+        let html = download(url).expect("failed to download");
+        // let html = "".to_string();
+        let parsed_major = parse_major(html);
+        let json = serde_json::to_string_pretty(&parsed_major).unwrap();
+        fs::write("output/".to_owned() + name, json).unwrap();
+        eprintln!("Done! {}", name);
+    });
 }
 
-fn parse_major() -> Vec<Course> {
-    let document = Document::from(include_str!("../plan.html"));
+fn download(url: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let resp = reqwest::blocking::get(url)?.text()?;
+    Ok(resp)
+}
+
+fn parse_major(html: String) -> Vec<Course> {
+    let document = Document::from(&html[..]);
+    // let document = Document::from(include_str!("../plan.html"));
     let mut parsed_courses: Vec<Course> = vec![];
 
     // for each semster
