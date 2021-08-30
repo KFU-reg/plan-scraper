@@ -10,13 +10,8 @@ pub struct Course {
     pub credits: usize,
     pub pre_requisites: Vec<usize>,
     pub co_requisites: Vec<usize>,
-    pub semster: Semster,
-}
-
-#[derive(Debug, Clone)]
-pub struct Semster {
-    pub order: usize,
-    pub name: String,
+    /// starts at zero
+    pub semster: usize,
 }
 
 impl<'a> From<Node<'a>> for Course {
@@ -33,8 +28,6 @@ impl<'a> From<Node<'a>> for Course {
         if let Some(requisites_node) = course[3].first_child() {
             pre_requisites = get_pre_requisites(requisites_node);
             co_requisites = get_co_requisites(requisites_node);
-            println!("pre: {:?}", pre_requisites);
-            println!("co:{:?}", co_requisites);
         }
 
         Course {
@@ -43,10 +36,8 @@ impl<'a> From<Node<'a>> for Course {
             credits,
             pre_requisites,
             co_requisites,
-            semster: Semster {
-                order: 0,
-                name: "".to_string(),
-            },
+            // later should will be filled by calling function!
+            semster: 0,
         }
     }
 }
