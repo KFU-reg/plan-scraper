@@ -5,6 +5,11 @@ use select::document::Document;
 use select::predicate::Name;
 
 fn main() {
+    let major = parse_major();
+    println!("{:#?}", major);
+}
+
+fn parse_major() -> Vec<Course> {
     let document = Document::from(include_str!("../plan.html"));
     let mut parsed_courses: Vec<Course> = vec![];
 
@@ -15,8 +20,7 @@ fn main() {
             // get course info
             let course = Course::new(courses, semester_index);
             parsed_courses.push(course.clone());
-
-            println!("{:?}", course);
         }
     }
+    parsed_courses
 }
