@@ -11,12 +11,12 @@ pub struct Course {
     pub pre_requisites: Vec<usize>,
     pub co_requisites: Vec<usize>,
     /// starts at zero
-    pub semster: usize,
+    pub semster_index: usize,
 }
 
-impl<'a> From<Node<'a>> for Course {
+impl<'a> Course {
     /// Takes a `<tr>` (table row) Node
-    fn from(courses: Node<'a>) -> Self {
+    pub fn new(courses: Node<'a>, semster_index: usize) -> Self {
         let course = courses.find(Name("td")).collect::<Vec<Node>>();
         let code = course[0].text().parse::<usize>().unwrap();
         let name = course[1].text();
@@ -36,8 +36,7 @@ impl<'a> From<Node<'a>> for Course {
             credits,
             pre_requisites,
             co_requisites,
-            // later should will be filled by calling function!
-            semster: 0,
+            semster_index,
         }
     }
 }
