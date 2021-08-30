@@ -2,8 +2,9 @@ use select::document::Document;
 use select::node::Node;
 // use select::predicate::{Attr, Class, Name, Predicate};
 use select::predicate::Name;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Course {
     pub code: usize,
     pub name: String,
