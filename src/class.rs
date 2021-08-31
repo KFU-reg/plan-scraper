@@ -35,6 +35,8 @@ impl<'a> Class {
         let section = class_node[2].text().replace("\n", "");
         let instructor = class_node[9].text().replace("\n", "");
         let days = get_days(class_node[6].text().replace("\n", "").replace(" ", ""));
+        let (starting_time, ending_time) =
+            get_times(class_node[8].text().replace("\n", "").replace(" ", ""));
         eprintln!("code: {}", code);
         eprintln!("crn: {}", crn);
         eprintln!("section: {}", section);
@@ -55,12 +57,12 @@ impl<'a> Class {
             code,
             crn,
             section,
-            instructor,
             days,
+            starting_time,
+            ending_time,
+            instructor,
             allowed_majors: vec!["".to_string()],
             allowed_colleges: vec!["".to_string()],
-            starting_time: "".to_string(),
-            ending_time: "".to_string(),
         })
     }
 }
@@ -81,6 +83,7 @@ pub fn parse(html: String) -> Vec<Class> {
     parsed_classes
 }
 
+/// gets string in this form "حنث"
 fn get_days(string: String) -> Vec<usize> {
     string
         .chars()
@@ -95,4 +98,11 @@ fn get_days(string: String) -> Vec<usize> {
             _ => panic!("Weird day format {}", day),
         })
         .collect()
+}
+
+/// gets string in this form "0000-1111"
+/// where 0000 is the starting and 1111 is the ending
+fn get_times(string: String) -> (String, String) {
+    let (s, e) = string.split_once('-').unwrap();
+    (s.to_string(), e.to_string())
 }
