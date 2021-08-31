@@ -1,7 +1,9 @@
 # Plan Scraper
-This Registration Plans `JSON` Scrapper written in Rust.
+This is a Registration (*Classes and Courses*) `JSON` Scrapper written in Rust.
 
-Please Note that this project is a WIP!, more options should be included upon the release of `v1.0`.
+Please Note that **this project is a WIP!**, more options should be included upon the release of `v1.0`.
+
+*If you want the JSON directly, you can find it at this repo [KFU-database](github.com/kfu-reg/database)*
 
 # Usage
 ## Courses Data
@@ -25,9 +27,6 @@ cargo run --bin courses
       "000001"
     ],
     "semster_index": 0
-  },
-  {
-  ...
   },
 
 ]
@@ -53,14 +52,16 @@ cargo run --bin classes
     "days": [
       2
     ],
-    "starting_time": "",
-    "ending_time": "",
+    "starting_time": "0915",
+    "ending_time": "1045",
     "instructor": "Name",
     "allowed_majors": [
-      "major-codes"
+      "major-code1",
+      "major-code2"
     ],
     "allowed_colleges": [
-      "college-code"
+      "college-code1",
+      "college-code2"
     ]
   },
 
