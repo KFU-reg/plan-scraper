@@ -6,11 +6,11 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Course {
-    pub code: usize,
+    pub code: String,
     pub name: String,
     pub credits: usize,
-    pub pre_requisites: Vec<usize>,
-    pub co_requisites: Vec<usize>,
+    pub pre_requisites: Vec<String>,
+    pub co_requisites: Vec<String>,
     /// starts at zero
     pub semster_index: usize,
 }
@@ -19,13 +19,13 @@ impl<'a> Course {
     /// Takes a `<tr>` (table row) Node
     pub fn new(courses: Node<'a>, semster_index: usize) -> Self {
         let course = courses.find(Name("td")).collect::<Vec<Node>>();
-        let code = course[0].text().parse::<usize>().unwrap();
+        let code = course[0].text();
         let name = course[1].text();
         let credits = course[2].text().parse::<usize>().unwrap();
 
         // gets the PreRequists Node
-        let mut pre_requisites: Vec<usize> = vec![];
-        let mut co_requisites: Vec<usize> = vec![];
+        let mut pre_requisites: Vec<String> = vec![];
+        let mut co_requisites: Vec<String> = vec![];
         if let Some(requisites_node) = course[3].first_child() {
             pre_requisites = get_pre_requisites(requisites_node);
             co_requisites = get_co_requisites(requisites_node);
@@ -62,15 +62,15 @@ pub fn parse_courses(html: String) -> Vec<Course> {
 // helper functions
 
 // " [0817-140] تفاضل وتكامل 1 - غير متزامن"
-fn get_pre_requisites(node: Node) -> Vec<usize> {
+fn get_pre_requisites(node: Node) -> Vec<String> {
     get_requisites(node, &|course: &String| course.contains("غير متزامن"))
 }
 // " [0817-140] تفاضل وتكامل 1 متزامن"
-fn get_co_requisites(node: Node) -> Vec<usize> {
+fn get_co_requisites(node: Node) -> Vec<String> {
     get_requisites(node, &|course: &String| !course.contains("غير متزامن"))
 }
 
-fn get_requisites(node: Node, filter: &dyn Fn(&String) -> bool) -> Vec<usize> {
+fn get_requisites(node: Node, filter: &dyn Fn(&String) -> bool) -> Vec<String> {
     // the inner attribute contains html (bruh)
     // like this: `<div data-content="<span/>"/>`
     let data_content = node.attr("data-content").unwrap_or("");
@@ -87,10 +87,11 @@ fn get_requisites(node: Node, filter: &dyn Fn(&String) -> bool) -> Vec<usize> {
 // " [0817-140] تفاضل وتكامل 1 - غير متزامن"
 // output
 // 0817140
-fn get_code(raw: String) -> usize {
+fn get_code(raw: String) -> String {
     let first = raw.find('[').unwrap() + 1;
     let last = raw.find(']').unwrap() - 1;
     let raw = raw.replace("-", "");
 
-    raw[first..last].parse::<usize>().unwrap()
+    raw[first..last].parse::<usize>().unwrap(); //making sure it is a number
+    raw[first..last].to_string()
 }
