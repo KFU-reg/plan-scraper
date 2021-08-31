@@ -3,11 +3,11 @@ This is a Registration (*Classes and Courses*) `JSON` Scrapper written in Rust.
 
 Please Note that **this project is a WIP!**, more options should be included upon the release of `v1.0`.
 
-*If you want the JSON directly, you can find it at this repo [KFU-database](github.com/kfu-reg/database)*
+*If you want the JSON directly, you can find it at this repo [KFU-database](github.com/kfu-reg/database)* **TODO!**
 
 # Usage
 ## Courses Data
-To generate courses Data (Requisites, Credits, Codes, Semster...) under a file called `output`
+Generate courses Data (Requisites, Credits, Codes, Semster...) under a file called `output`
 
 ```bash
 cargo run --bin courses
@@ -35,7 +35,7 @@ cargo run --bin courses
 
 
 ## Classes Data
-To generate Classes Data (Instructors, CRNs, Schedule, allowed majors..) under a file called `output` 
+Generate Classes Data (Instructors, CRNs, Schedule, allowed majors..) under a file called `output` 
 
 ```bash
 cargo run --bin classes
