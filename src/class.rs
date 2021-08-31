@@ -37,11 +37,15 @@ impl<'a> Class {
         let days = get_days(class_node[6].text().replace("\n", "").replace(" ", ""));
         let (starting_time, ending_time) =
             get_times(class_node[8].text().replace("\n", "").replace(" ", ""));
+        let allowed_colleges = allowed(class_node[11].text().replace("\n", ""));
+        let allowed_majors = allowed(class_node[12].text().replace("\n", ""));
         eprintln!("code: {}", code);
         eprintln!("crn: {}", crn);
         eprintln!("section: {}", section);
         eprintln!("instructor: {}", instructor);
         eprintln!("days: {:?}", days);
+        eprintln!("times: {:?}", (starting_time.clone(), ending_time.clone()));
+        eprintln!("allowed majors: {:?}", allowed_majors);
 
         // let credits = class_node[2].text().parse::<usize>().unwrap();
 
@@ -61,8 +65,8 @@ impl<'a> Class {
             starting_time,
             ending_time,
             instructor,
-            allowed_majors: vec!["".to_string()],
-            allowed_colleges: vec!["".to_string()],
+            allowed_majors,
+            allowed_colleges,
         })
     }
 }
@@ -105,4 +109,11 @@ fn get_days(string: String) -> Vec<usize> {
 fn get_times(string: String) -> (String, String) {
     let (s, e) = string.split_once('-').unwrap();
     (s.to_string(), e.to_string())
+}
+// for majors and colleges
+fn allowed(string: String) -> Vec<String> {
+    string
+        .split_ascii_whitespace()
+        .map(|x| x.to_string())
+        .collect()
 }
