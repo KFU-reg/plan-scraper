@@ -66,3 +66,8 @@ cargo run --bin classes
   },
 
 ```
+
+# WIP!
+- [ ] Link Scraper
+- [ ] Choose output file
+- [ ] ???
