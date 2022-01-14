@@ -2,6 +2,14 @@ use select::{document::Document, node::Node, predicate::Name};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+pub enum ClassStatus {
+    Available,
+    UnAvailable,
+    Full,
+    Unknown,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Class {
     pub code: String,
     pub crn: String,
@@ -13,6 +21,7 @@ pub struct Class {
     pub instructor: String,
     pub allowed_majors: Vec<String>,
     pub allowed_colleges: Vec<String>,
+    pub available: ClassStatus,
 }
 
 impl<'a> Class {
@@ -39,6 +48,7 @@ impl<'a> Class {
             get_times(class_node[8].text().replace("\n", "").replace(" ", ""));
         let allowed_colleges = allowed(class_node[11].text().replace("\n", ""));
         let allowed_majors = allowed(class_node[12].text().replace("\n", ""));
+        let available = available(&class_node[3].text().trim().replace("\n", ""));
         eprintln!("code: {}", code);
         eprintln!("crn: {}", crn);
         eprintln!("section: {}", section);
@@ -46,6 +56,7 @@ impl<'a> Class {
         eprintln!("days: {:?}", days);
         eprintln!("times: {:?}", (starting_time.clone(), ending_time.clone()));
         eprintln!("allowed majors: {:?}", allowed_majors);
+        eprintln!("Available: {:?}", available);
 
         // let credits = class_node[2].text().parse::<usize>().unwrap();
 
@@ -67,6 +78,7 @@ impl<'a> Class {
             instructor,
             allowed_majors,
             allowed_colleges,
+            available,
         })
     }
 }
@@ -109,6 +121,15 @@ fn get_days(string: String) -> Vec<usize> {
 fn get_times(string: String) -> (String, String) {
     let (s, e) = string.split_once('-').unwrap();
     (s.to_string(), e.to_string())
+}
+fn available(string: &str) -> ClassStatus {
+    println!("{}", string);
+    match string {
+        "متاحه" => ClassStatus::Available,
+        "غير متاحه" => ClassStatus::UnAvailable,
+        "ممتلئة" => ClassStatus::Full,
+        _ => todo!(),
+    }
 }
 // for majors and colleges
 fn allowed(string: String) -> Vec<String> {

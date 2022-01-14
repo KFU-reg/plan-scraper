@@ -8,7 +8,7 @@ use std::{fs::File, io};
 
 use custom_error::custom_error;
 use glob::glob;
-use kfu_reg_scraper::class::Class;
+use kfu_reg_scraper::class::{Class, ClassStatus};
 use kfu_reg_scraper::consts::MAJORS_URLS;
 use kfu_reg_scraper::course::Course;
 
@@ -37,12 +37,15 @@ fn plan_for_major(courses: Vec<Course>, all_classes: &[Class]) -> Plan {
             name: course.name.clone(),
             crn: class.crn.clone(),
             section: class.section.clone(),
-            days: "TODO".to_string(), //TODO
-            time: "TODO".to_string(), //TODO
+            days: class.days.clone(),
+            time: class.starting_time.clone() + "-" + &class.ending_time,
             instructor: class.instructor.clone(),
             semster_index: course.semster_index,
             college_allowed: true, //TODO
-            major_allowed: true,   //TODO
+            major_allowed: true,   // TODO
+            co_req: course.co_requisites.clone(),
+            credits: course.credits,
+            available: class.available.clone(),
         });
         plan.extend(cp_course);
     }
@@ -97,8 +100,9 @@ struct CP {
     code: String,
     name: String,
     crn: String,
+    credits: usize,
     section: String,
-    days: String,
+    days: Vec<usize>,
     time: String,
     instructor: String,
     semster_index: usize,
@@ -106,6 +110,9 @@ struct CP {
     college_allowed: bool,
     /// TODO: No restrictions on Major?
     major_allowed: bool,
+    ///Co requisites
+    co_req: Vec<String>,
+    available: ClassStatus,
 }
 
 custom_error! {CliError
