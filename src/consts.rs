@@ -1,4 +1,3 @@
-use serde_json::json;
 // sm=10 is semster 1
 // sm=10 is semster 2
 // sex_code=11 is males, 12 is females

@@ -1,4 +1,3 @@
-#![allow(dead_code, unused)]
 extern crate custom_error;
 extern crate glob;
 
@@ -9,7 +8,6 @@ use std::{fs::File, io};
 use custom_error::custom_error;
 use glob::glob;
 use kfu_reg_scraper::class::{Class, ClassStatus};
-use kfu_reg_scraper::consts::MAJORS_URLS;
 use kfu_reg_scraper::course::Course;
 
 fn main() {
@@ -17,6 +15,7 @@ fn main() {
     let all_major_plans: Vec<(String, Vec<Course>)> = get_all_plans("output/Plan_*.json").unwrap();
 
     for (major, courses) in all_major_plans {
+        println!("Preparing: {}", major);
         let plan: Plan = plan_for_major(courses, &all_classes);
 
         let json = serde_json::to_string_pretty(&plan).unwrap();
@@ -72,7 +71,7 @@ fn get_all_plans(path: &str) -> Result<Vec<(String, Vec<Course>)>, CliError> {
         let pathbuf = entry?;
         let file = File::open(pathbuf.clone())?;
 
-        let mut courses: Vec<Course> = serde_json::from_reader(file)?;
+        let courses: Vec<Course> = serde_json::from_reader(file)?;
 
         let course_name = pathbuf
             .to_str()
