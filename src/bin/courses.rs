@@ -13,7 +13,7 @@ fn main() {
         // let html = "".to_string();
         let parsed_major = course::parse_courses(html);
         let json = serde_json::to_string_pretty(&parsed_major).unwrap();
-        fs::write("output/".to_owned() + name + ".json", json).unwrap();
+        fs::write("output/Plan_".to_owned() + name + ".json", json).unwrap();
         eprintln!("Done! {}", name);
     });
 }

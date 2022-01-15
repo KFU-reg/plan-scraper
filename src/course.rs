@@ -52,7 +52,7 @@ pub fn parse_courses(html: String) -> Vec<Course> {
         // and each row
         for courses in semster.find(Name("tr")) {
             // get course info
-            let course = Course::new(courses, semester_index);
+            let course = Course::new(courses, semester_index + 1);
             parsed_courses.push(course.clone());
         }
     }
