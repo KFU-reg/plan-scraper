@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use select::{document::Document, node::Node, predicate::Name};
 use serde::{Deserialize, Serialize};
 
@@ -108,7 +109,13 @@ pub fn merge_duplicates(classes_with_dups: &[Class]) -> Vec<Class> {
             .iter()
             .position(|a| class_may_be_duplicate.crn == a.crn)
         {
-            merged[found_dup].days.extend(&class_may_be_duplicate.days)
+            merged[found_dup].days.extend(&class_may_be_duplicate.days);
+            merged[found_dup].days = merged[found_dup]
+                .days
+                .clone()
+                .into_iter()
+                .unique()
+                .collect();
         } else {
             // it aint a dup!
             merged.push(class_may_be_duplicate.clone());
