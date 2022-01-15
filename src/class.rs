@@ -99,6 +99,24 @@ pub fn parse(html: String) -> Vec<Class> {
     parsed_classes
 }
 
+/// Merges duplicates. some classes have same CRN but different days.
+/// merge the days only!
+pub fn merge_duplicates(classes_with_dups: &[Class]) -> Vec<Class> {
+    let mut merged: Vec<Class> = vec![];
+    for class_may_be_duplicate in classes_with_dups {
+        if let Some(found_dup) = merged
+            .iter()
+            .position(|a| class_may_be_duplicate.crn == a.crn)
+        {
+            merged[found_dup].days.extend(&class_may_be_duplicate.days)
+        } else {
+            // it aint a dup!
+            merged.push(class_may_be_duplicate.clone());
+        }
+    }
+    merged
+}
+
 /// gets string in this form "حنث"
 fn get_days(string: String) -> Vec<usize> {
     string

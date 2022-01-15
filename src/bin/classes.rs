@@ -14,8 +14,9 @@ fn main() {
         let html = helpers::download(url).expect("failed to download");
         // let html = "".to_string();
 
-        let parsed_major = class::parse(html);
-        let json = serde_json::to_string_pretty(&parsed_major).unwrap();
+        let parsed_classes = class::parse(html);
+        let without_duplicates = class::merge_duplicates(&parsed_classes);
+        let json = serde_json::to_string_pretty(&without_duplicates).unwrap();
         // println!("json: {}", json);
         fs::write("output/Classes_".to_owned() + c.name_en + ".json", json).unwrap();
         eprintln!("Done! {}", c.name_en);
