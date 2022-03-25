@@ -143,7 +143,7 @@ pub fn avialable_courses_urls() -> Vec<String> {
         };
         let url = format!(
             "{}p_trm_code={}{}&p_col_code={}&p_sex_code={}",
-            BASE_URL, 1442, 20, prop.code, sex_code
+            BASE_URL, 1443, 10, prop.code, sex_code
         );
         urls.push(url);
     }

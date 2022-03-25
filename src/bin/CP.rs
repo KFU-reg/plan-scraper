@@ -31,20 +31,25 @@ fn plan_for_major(courses: Vec<Course>, all_classes: &[Class]) -> Plan {
             .filter(|class| class.code == course.code)
             .collect();
 
-        let cp_course = classes.iter().map(|class| CP {
-            code: class.code.clone(),
-            name: course.name.clone(),
-            crn: class.crn.clone(),
-            section: class.section.clone(),
-            days: class.days.clone(),
-            time: class.starting_time.clone() + "-" + &class.ending_time,
-            instructor: class.instructor.clone(),
-            semster_index: course.semster_index,
-            college_allowed: true, //TODO
-            major_allowed: true,   // TODO
-            co_req: course.co_requisites.clone(),
-            credits: course.credits,
-            available: class.available.clone(),
+        let cp_course = classes.iter().map(|class| {
+            let mut days = class.days.clone();
+            days.sort();
+
+            CP {
+                code: class.code.clone(),
+                name: course.name.clone(),
+                crn: class.crn.clone(),
+                section: class.section.clone(),
+                days,
+                time: class.starting_time.clone() + "-" + &class.ending_time,
+                instructor: class.instructor.clone(),
+                semster_index: course.semster_index,
+                college_allowed: true, //TODO
+                major_allowed: true,   // TODO
+                co_req: course.co_requisites.clone(),
+                credits: course.credits,
+                available: class.available.clone(),
+            }
         });
         plan.extend(cp_course);
     }

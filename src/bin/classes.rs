@@ -9,7 +9,7 @@ use std::fs;
 fn main() {
     let class_urls = avialable_courses_urls();
 
-    class_urls.iter().enumerate().for_each(|((i, url))| {
+    class_urls.iter().enumerate().for_each(|(i, url)| {
         let c = CLASS_LIST_PROPS[i];
         let html = helpers::download(url).expect("failed to download");
         // let html = "".to_string();
