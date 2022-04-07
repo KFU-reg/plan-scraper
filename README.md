@@ -3,9 +3,25 @@ This is a Registration (*Classes and Courses*) `JSON` Scrapper written in Rust.
 
 Please Note that **this project is a WIP!**, more options should be included upon the release of `v1.0`.
 
-*If you want the JSON directly, you can find it at this repo [KFU-database](https://github.com/kfu-reg/database)* **TODO!**
+*If you want the JSON directly, you can find it at this repo [KFU-database](https://github.com/kfu-reg/database)*
 
 # Usage
+
+There are three different things that need to be generated
+
+1. Courses Data (From the plans page)
+2. Classes Data (Available Sections and such)
+3. Classes Available for a Plan
+
+```bash
+# Running these 3 commands should generate the required data.
+cargo run --bin courses # scraper
+cargo run --bin classes # scraper
+cargo run --bin CP      # combines already scrapped data
+
+```
+
+# Data:
 ## Courses Data
 Generate courses Data (Requisites, Credits, Codes, Semster...) under a file called `output`
 
